@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배네핏 - 혜택 상세</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; color:#111827; background:#fff; }
+  .wrap { max-width:1200px; margin:0 auto; padding:0 24px; }
+  a { text-decoration:none; color:inherit; }
+
+  header { border-bottom:1px solid #E5E7EB; }
+  header .wrap { height:72px; display:flex; align-items:center; justify-content:space-between; }
+  .logo { font-size:20px; font-weight:800; }
+  nav { display:flex; gap:30px; font-size:14px; }
+  nav a { text-decoration:none; color:#374151; }
+  .header-right { display:flex; align-items:center; gap:12px; font-size:13.5px; }
+  .btn-primary { background:#111827; color:#fff; border:none; padding:11px 20px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; }
+  .btn-outline { background:#fff; border:1.5px solid #111827; color:#111827; padding:10px 19px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; }
+
+  main { padding-bottom:20px; }
+  .breadcrumb { font-size:13px; color:#9CA3AF; padding:22px 0 18px; }
+  .breadcrumb b { color:#111827; font-weight:600; }
+
+  .detail-head { padding-bottom:24px; border-bottom:1px solid #E5E7EB; margin-bottom:28px; }
+  .dh-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .dh-top .tag { font-size:13px; color:#6B7280; font-weight:600; }
+  .detail-head h1 { font-size:32px; font-weight:800; margin-bottom:12px; }
+  .org-row { display:flex; align-items:center; gap:8px; font-size:14px; color:#6B7280; }
+  .org-row .dot { width:20px; height:20px; border-radius:50%; background:#E5E7EB; }
+
+  .save-btn { width:34px; height:34px; border:1.5px solid #D1D5DB; border-radius:8px; background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#9CA3AF; transition:all .15s; flex-shrink:0; }
+  .save-btn:hover { border-color:#111827; color:#111827; }
+  .save-btn svg { width:16px; height:16px; }
+  .save-btn.saved { background:#111827; border-color:#111827; color:#fff; }
+
+  .detail-callout { display:flex; justify-content:space-between; align-items:center; background:#F5F5F5; border-radius:16px; padding:28px 32px; margin-bottom:36px; flex-wrap:wrap; gap:20px; }
+  .dc-amount-label { font-size:13px; color:#6B7280; margin-bottom:6px; }
+  .dc-amount { font-size:28px; font-weight:800; margin-bottom:14px; }
+  .status-badge { display:inline-flex; align-items:center; gap:6px; font-size:13px; font-weight:600; padding:8px 14px; border-radius:20px; background:#fff; border:1.5px solid #D1D5DB; }
+  .dc-right { display:flex; gap:10px; flex-wrap:wrap; }
+
+  .tabs2 { display:flex; gap:6px; border-bottom:1px solid #E5E7EB; margin-bottom:28px; overflow-x:auto; }
+  .tab2 { background:none; border:none; padding:12px 18px; font-size:14.5px; font-weight:700; color:#9CA3AF; cursor:pointer; margin-bottom:-1px; border-bottom:2px solid transparent; white-space:nowrap; }
+  .tab2.on { color:#111827; border-bottom-color:#111827; }
+
+  .tab-panel { margin-bottom:44px; }
+  .elig-list, .term-list { display:flex; flex-direction:column; }
+  .elig-row, .term-row { display:grid; grid-template-columns:140px 1fr; gap:20px; padding:16px 0; border-bottom:1px solid #F3F4F6; }
+  .elig-label, .term-word { font-size:14px; font-weight:700; color:#374151; }
+  .elig-value, .term-def { font-size:14px; color:#374151; line-height:1.6; }
+
+  .steps-list { margin-bottom:24px; }
+  .step-row { display:flex; gap:16px; padding:18px 0; border-bottom:1px solid #F3F4F6; }
+  .step-num { width:28px; height:28px; border-radius:50%; background:#111827; color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+  .step-title { font-size:15px; font-weight:700; margin-bottom:4px; }
+  .step-desc { font-size:13px; color:#6B7280; line-height:1.5; }
+  .doc-checklist { background:#F5F5F5; border-radius:12px; padding:20px 22px; }
+  .dc-title { font-size:13px; font-weight:700; color:#374151; margin-bottom:12px; }
+  .doc-item { font-size:14px; color:#374151; padding:6px 0; }
+
+  .related-section { padding:44px 0 60px; border-top:1px solid #E5E7EB; }
+  .related-section h2 { font-size:20px; font-weight:800; margin-bottom:20px; }
+  .result-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .r-card { border:1px solid #D1D5DB; border-radius:14px; padding:20px; position:relative; }
+  .r-card .save-btn { position:absolute; top:16px; right:16px; width:30px; height:30px; }
+  .r-card .top-row { margin-bottom:10px; }
+  .r-card .tag { font-size:12px; color:#6B7280; }
+  .r-card .title { font-size:16px; font-weight:800; margin-bottom:10px; }
+  .r-card .src { display:flex; align-items:center; gap:6px; font-size:12.5px; color:#6B7280; margin-bottom:10px; }
+  .r-card .src .dot2 { width:14px; height:14px; border-radius:50%; background:#E5E7EB; }
+  .r-card .desc { font-size:13.5px; color:#374151; margin-bottom:16px; }
+  .btn-row { display:flex; gap:8px; }
+  .btn-row .detail-btn { flex:1; background:#111827; color:#fff; border:none; padding:11px; border-radius:14px; font-size:12.5px; font-weight:700; cursor:pointer; }
+  .btn-row .link-btn { flex:1; background:#fff; border:1px solid #D1D5DB; border-radius:14px; font-size:12.5px; color:#374151; cursor:pointer; }
+
+  footer { padding:26px 0; text-align:center; font-size:12px; color:#9CA3AF; border-top:1px solid #E5E7EB; }
+
+  @media (max-width:860px) {
+    nav { display:none; }
+    .detail-head h1 { font-size:24px; }
+    .detail-callout { flex-direction:column; align-items:stretch; }
+    .dc-right { flex-direction:column; }
+    .dc-right button { width:100%; }
+    .elig-row, .term-row { grid-template-columns:1fr; gap:6px; }
+    .result-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="benefit-wireframe-b.html" class="logo">배네핏</a>
+    <nav><a href="benefit-wireframe-benefits.html">혜택탐색</a><a href="benefit-wireframe-training.html">국비교육</a><a href="benefit-wireframe-guide.html">가이드</a></nav>
+    <div class="header-right"><button class="btn-outline">로그인</button><button class="btn-primary">회원가입</button></div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="breadcrumb"><a href="benefit-wireframe-b.html">홈</a> &gt; <a href="benefit-wireframe-benefits.html">혜택탐색</a> &gt; 현금·수당 &gt; <b>청년 도약계좌</b></div>
+
+    <div class="detail-head">
+      <div class="dh-top">
+        <span class="tag">현금·수당</span>
+        <button class="save-btn" id="mainSave"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></button>
+      </div>
+      <h1>청년 도약계좌</h1>
+      <div class="org-row"><span class="dot"></span>금융위원회 운영</div>
+    </div>
+
+    <div class="detail-callout">
+      <div>
+        <div class="dc-amount-label">지원 금액</div>
+        <div class="dc-amount">최대 5,000만원</div>
+        <div class="status-badge">⚠ 확인 필요 · 소득 조건 재확인이 필요해요</div>
+      </div>
+      <div class="dc-right">
+        <button class="btn-outline">공유하기</button>
+        <button class="btn-primary">신청 사이트 이동 ↗</button>
+      </div>
+    </div>
+
+    <div class="tabs2">
+      <button class="tab2 on" data-tab="elig">자격요건</button>
+      <button class="tab2" data-tab="apply">신청방법</button>
+      <button class="tab2" data-tab="terms">용어해설</button>
+    </div>
+
+    <div class="tab-panel" id="panel-elig">
+      <div class="elig-list">
+        <div class="elig-row"><div class="elig-label">연령</div><div class="elig-value">만 19세 ~ 34세</div></div>
+        <div class="elig-row"><div class="elig-label">개인소득</div><div class="elig-value">총급여 7,500만원 이하</div></div>
+        <div class="elig-row"><div class="elig-label">가구소득</div><div class="elig-value">기준 중위소득 180% 이하</div></div>
+        <div class="elig-row"><div class="elig-label">가입기간</div><div class="elig-value">5년 만기 자유적립식</div></div>
+        <div class="elig-row"><div class="elig-label">제외 대상</div><div class="elig-value">최근 3개년 중 1회 이상 금융소득종합과세 대상자</div></div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-apply" style="display:none;">
+      <div class="steps-list">
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div><div class="step-title">취급은행 앱에서 계좌 개설 신청</div><div class="step-desc">국민·신한·우리·하나 등 11개 은행 앱에서 비대면 신청 가능</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div><div class="step-title">서민금융진흥원 소득요건 확인</div><div class="step-desc">신청 후 2~3주 이내 심사 결과 안내</div></div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div><div class="step-title">계좌 개설 및 첫 납입</div><div class="step-desc">심사 통과 후 앱에서 계좌 개설, 매월 자동이체 설정</div></div>
+        </div>
+      </div>
+      <div class="doc-checklist">
+        <div class="dc-title">필요 서류</div>
+        <div class="doc-item">☐ 신분증</div>
+        <div class="doc-item">☐ 소득금액증명원</div>
+        <div class="doc-item">☐ 주민등록등본</div>
+      </div>
+    </div>
+
+    <div class="tab-panel" id="panel-terms" style="display:none;">
+      <div class="term-list">
+        <div class="term-row"><div class="term-word">정부 기여금</div><div class="term-def">납입액에 비례해 정부가 추가로 얹어주는 금액</div></div>
+        <div class="term-row"><div class="term-word">중위소득</div><div class="term-def">전체 가구를 소득순으로 줄 세웠을 때 정확히 중간에 있는 가구의 소득</div></div>
+        <div class="term-row"><div class="term-word">금융소득종합과세</div><div class="term-def">이자·배당 등 금융소득이 연 2천만원을 초과해 종합과세되는 것</div></div>
+      </div>
+    </div>
+
+    <div class="related-section">
+      <h2>비슷한 혜택 더 보기</h2>
+      <div class="result-grid" id="relatedGrid"></div>
+    </div>
+  </div>
+</main>
+
+<footer>ⓒ 배네핏 · 이용약관 · 개인정보처리방침</footer>
+
+<script>
+  document.querySelectorAll('.tab2').forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll('.tab2').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+      document.getElementById('panel-' + btn.dataset.tab).style.display = 'block';
+    };
+  });
+
+  document.getElementById('mainSave').onclick = function () { this.classList.toggle('saved'); };
+
+  const related = [
+    { tag:"현금·수당", title:"근로장려금", src:"국세청", desc:"소득·재산 기준 충족 시 근로 장려 지원금 지급" },
+    { tag:"교육·훈련", title:"국민내일배움카드", src:"고용24", desc:"직업훈련비 최대 500만원 지원" },
+    { tag:"주거지원", title:"청년 전세자금 대출", src:"주택도시보증공사", desc:"저금리로 최대 2억원까지 대출" }
+  ];
+  const grid = document.getElementById('relatedGrid');
+  related.forEach(r => {
+    const d = document.createElement('div');
+    d.className = 'r-card';
+    d.innerHTML =
+      '<button class="save-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></button>' +
+      '<div class="top-row"><span class="tag">'+r.tag+'</span></div>' +
+      '<div class="title">'+r.title+'</div>' +
+      '<div class="src"><span class="dot2"></span>'+r.src+'</div>' +
+      '<div class="desc">'+r.desc+'</div>' +
+      '<div class="btn-row"><button class="detail-btn" onclick="location.href=\'benefit-wireframe-detail.html\'">상세보기</button><button class="link-btn">신청 사이트 이동</button></div>';
+    grid.appendChild(d);
+    d.querySelector('.save-btn').onclick = function(e) { e.stopPropagation(); this.classList.toggle('saved'); };
+  });
+</script>
+
+</body>
+</html>

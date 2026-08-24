@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배네핏 - 혜택 탐색</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; color:#111827; background:#fff; }
+  .wrap { max-width:1200px; margin:0 auto; padding:0 24px; }
+  a { text-decoration:none; color:inherit; }
+
+  header { border-bottom:1px solid #E5E7EB; }
+  header .wrap { height:72px; display:flex; align-items:center; justify-content:space-between; }
+  .logo { font-size:20px; font-weight:800; }
+  nav { display:flex; gap:30px; font-size:14px; }
+  nav a { text-decoration:none; color:#374151; }
+  nav a.active { color:#111827; font-weight:700; }
+  .header-right { display:flex; align-items:center; gap:12px; font-size:13.5px; }
+  .btn-primary { background:#111827; color:#fff; border:none; padding:11px 20px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; }
+  .btn-outline { background:#fff; border:1.5px solid #111827; color:#111827; padding:10px 19px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; }
+
+  main { padding-bottom:60px; }
+  .page-head { display:flex; align-items:baseline; gap:12px; padding:28px 0 20px; }
+  .page-head h1 { font-size:26px; font-weight:800; }
+  .result-count { font-size:14px; color:#6B7280; }
+  .result-count b { color:#111827; }
+
+  .filter-card { background:#F5F5F5; border-radius:16px; padding:20px 24px; margin-bottom:24px; }
+  .filter-row { display:flex; gap:12px; flex-wrap:wrap; }
+  .fselect { flex:1; min-width:130px; background:#fff; border:1px solid #D1D5DB; border-radius:10px; padding:10px 14px; }
+  .fselect label { display:block; font-size:11px; color:#9CA3AF; margin-bottom:2px; }
+  .fselect select { border:none; width:100%; font-size:13.5px; background:transparent; color:#111827; }
+  .find-btn { flex-shrink:0; padding:0 24px; border-radius:14px; }
+
+  .cats-band { background:#F5F5F5; border-radius:16px; padding:24px 20px; margin-bottom:24px; }
+  .cat-circles { display:grid; grid-template-columns:repeat(9,1fr); gap:12px; }
+  .cc-item { display:flex; flex-direction:column; align-items:center; gap:8px; cursor:pointer; }
+  .cc-item .circle { width:52px; height:52px; border-radius:50%; background:#E5E7EB; transition:all .15s; }
+  .cc-item:hover .circle { background:#D1D5DB; }
+  .cc-item.sel .circle { background:#111827; }
+  .cc-item .lb { font-size:11.5px; font-weight:600; text-align:center; }
+  .cc-item.sel .lb { font-weight:800; }
+
+  .sort-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+  .sort-tabs { display:flex; gap:6px; }
+  .sort-tabs button { background:#fff; border:1px solid #D1D5DB; border-radius:20px; padding:8px 16px; font-size:12.5px; color:#6B7280; cursor:pointer; }
+  .sort-tabs button.on { background:#111827; color:#fff; border-color:#111827; }
+
+  .result-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; transition:opacity .2s; margin-bottom:36px; }
+  .result-grid.loading { opacity:.3; }
+  @keyframes cardIn { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+  .r-card { border:1px solid #D1D5DB; border-radius:14px; padding:20px; position:relative; }
+  .r-card.new { animation:cardIn .35s ease; }
+  .save-btn { position:absolute; top:16px; right:16px; width:30px; height:30px; border:1.5px solid #D1D5DB; border-radius:7px; background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#9CA3AF; transition:all .15s; }
+  .save-btn:hover { border-color:#111827; color:#111827; }
+  .save-btn svg { width:15px; height:15px; }
+  .save-btn.saved { background:#111827; border-color:#111827; color:#fff; }
+  .r-card .top-row { margin-bottom:10px; }
+  .r-card .tag { font-size:12px; color:#6B7280; }
+  .r-card .title { font-size:16px; font-weight:800; margin-bottom:10px; }
+  .r-card .src { display:flex; align-items:center; gap:6px; font-size:12.5px; color:#6B7280; margin-bottom:10px; }
+  .r-card .src .dot2 { width:14px; height:14px; border-radius:50%; background:#E5E7EB; }
+  .r-card .desc { font-size:13.5px; color:#374151; margin-bottom:16px; }
+  .btn-row { display:flex; gap:8px; }
+  .btn-row .detail-btn { flex:1; background:#111827; color:#fff; border:none; padding:11px; border-radius:14px; font-size:12.5px; font-weight:700; cursor:pointer; }
+  .btn-row .link-btn { flex:1; background:#fff; border:1px solid #D1D5DB; border-radius:14px; font-size:12.5px; color:#374151; cursor:pointer; }
+
+  .load-more { display:block; margin:0 auto; background:#fff; border:1.5px solid #D1D5DB; border-radius:10px; padding:13px 40px; font-size:14px; font-weight:700; color:#374151; cursor:pointer; }
+
+  footer { padding:26px 0; text-align:center; font-size:12px; color:#9CA3AF; border-top:1px solid #E5E7EB; margin-top:40px; }
+
+  @media (max-width:860px) {
+    nav { display:none; }
+    .filter-row { flex-direction:column; }
+    .cat-circles { grid-template-columns:repeat(3,1fr); gap:10px; }
+    .cc-item .circle { width:48px; height:48px; }
+    .result-grid { grid-template-columns:1fr; }
+    .sort-tabs { overflow-x:auto; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="benefit-wireframe-b.html" class="logo">배네핏</a>
+    <nav><a href="benefit-wireframe-benefits.html" class="active">혜택탐색</a><a href="benefit-wireframe-training.html">국비교육</a><a href="benefit-wireframe-guide.html">가이드</a></nav>
+    <div class="header-right"><button class="btn-outline">로그인</button><button class="btn-primary">회원가입</button></div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>혜택 탐색</h1>
+      <div class="result-count">총 <b id="countNum">9</b>개의 혜택</div>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-row">
+        <div class="fselect"><label>거주지역</label><select><option>전체</option><option>서울특별시</option><option>경기도</option></select></div>
+        <div class="fselect"><label>연령대</label><select><option>전체</option><option>19~24세</option><option>25~34세</option></select></div>
+        <div class="fselect"><label>취업상태</label><select><option>전체</option><option>구직중</option><option>재직중</option></select></div>
+        <button class="btn-primary find-btn">검색</button>
+      </div>
+    </div>
+
+    <div class="cats-band">
+      <div class="cat-circles" id="catCircles"></div>
+    </div>
+
+    <div class="sort-row">
+      <div class="sort-tabs">
+        <button class="on">매칭순</button>
+        <button>조회순</button>
+        <button>마감임박순</button>
+      </div>
+    </div>
+
+    <div class="result-grid" id="resultGrid"></div>
+
+    <button class="load-more">더 보기</button>
+  </div>
+</main>
+
+<footer>ⓒ 배네핏 · 이용약관 · 개인정보처리방침</footer>
+
+<script>
+  const catList = ["현금·수당","교육·훈련","주거지원","취업","창업","육아·가족","건강·복지","우리지역"];
+
+  const ALL_BENEFITS = [
+    { tag:"현금·수당", title:"청년 도약계좌", src:"금융위원회", desc:"매월 저축하면 정부가 최대 6%까지 기여금을 지원" },
+    { tag:"현금·수당", title:"근로장려금", src:"국세청", desc:"소득·재산 기준 충족 시 근로 장려 지원금 지급" },
+    { tag:"교육·훈련", title:"국민내일배움카드", src:"고용24", desc:"직업훈련비 최대 500만원 지원" },
+    { tag:"주거지원", title:"청년월세 한시 특별지원", src:"복지로", desc:"월 최대 20만원, 최대 12개월 지원" },
+    { tag:"취업", title:"국민취업지원제도", src:"고용24", desc:"구직활동 지원 및 취업지원금 50만원…" },
+    { tag:"창업", title:"초기창업패키지", src:"중소벤처기업부", desc:"예비창업자 대상 최대 1억원 사업화 자금 지원" },
+    { tag:"육아·가족", title:"첫만남이용권", src:"보건복지부", desc:"출생아 1인당 200만원 바우처 지급" },
+    { tag:"건강·복지", title:"건강보험료 경감", src:"국민건강보험공단", desc:"소득 기준 충족 시 보험료 최대 50% 경감" },
+    { tag:"우리지역", title:"서울 청년 월세 지원", src:"서울특별시", desc:"서울 거주 청년 대상 월 최대 20만원 지원" }
+  ];
+
+  let activeCat = null;
+  const cbox = document.getElementById('catCircles');
+  const grid = document.getElementById('resultGrid');
+
+  function renderCats() {
+    cbox.innerHTML = '';
+    const allItem = document.createElement('div');
+    allItem.className = 'cc-item' + (activeCat===null ? ' sel':'');
+    allItem.innerHTML = '<div class="circle"></div><div class="lb">전체</div>';
+    allItem.onclick = () => { activeCat = null; renderCats(); renderResults(); };
+    cbox.appendChild(allItem);
+    catList.forEach(c => {
+      const d = document.createElement('div');
+      d.className = 'cc-item' + (activeCat===c ? ' sel':'');
+      d.innerHTML = '<div class="circle"></div><div class="lb">'+c+'</div>';
+      d.onclick = () => { activeCat = c; renderCats(); renderResults(); };
+      cbox.appendChild(d);
+    });
+  }
+
+  function renderResults() {
+    const list = activeCat ? ALL_BENEFITS.filter(b => b.tag===activeCat) : ALL_BENEFITS;
+    document.getElementById('countNum').textContent = list.length;
+    grid.innerHTML = '';
+    list.forEach(r => {
+      const d = document.createElement('div');
+      d.className = 'r-card new';
+      d.innerHTML =
+        '<button class="save-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></button>' +
+        '<div class="top-row"><span class="tag">'+r.tag+'</span></div>' +
+        '<div class="title">'+r.title+'</div>' +
+        '<div class="src"><span class="dot2"></span>'+r.src+'</div>' +
+        '<div class="desc">'+r.desc+'</div>' +
+        '<div class="btn-row"><button class="detail-btn" onclick="location.href=\'benefit-wireframe-detail.html\'">상세보기</button><button class="link-btn">신청 사이트 이동</button></div>';
+      grid.appendChild(d);
+      d.querySelector('.save-btn').onclick = function(e) { e.stopPropagation(); this.classList.toggle('saved'); };
+    });
+  }
+
+  renderCats();
+  renderResults();
+</script>
+
+</body>
+</html>

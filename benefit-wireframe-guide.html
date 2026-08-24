@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배네핏 - 가이드·FAQ</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; color:#111827; background:#fff; }
+  .wrap { max-width:1200px; margin:0 auto; padding:0 24px; }
+  a { text-decoration:none; color:inherit; }
+
+  header { border-bottom:1px solid #E5E7EB; }
+  header .wrap { height:72px; display:flex; align-items:center; justify-content:space-between; }
+  .logo { font-size:20px; font-weight:800; }
+  nav { display:flex; gap:30px; font-size:14px; }
+  nav a { text-decoration:none; color:#374151; }
+  nav a.active { color:#111827; font-weight:700; }
+  .header-right { display:flex; align-items:center; gap:12px; font-size:13.5px; }
+  .btn-primary { background:#111827; color:#fff; border:none; padding:11px 20px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; }
+  .btn-outline { background:#fff; border:1.5px solid #111827; color:#111827; padding:10px 19px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; }
+
+  main { padding-bottom:60px; }
+  .page-head { padding:28px 0 24px; text-align:center; }
+  .page-head h1 { font-size:26px; font-weight:800; margin-bottom:8px; }
+  .page-head p { font-size:14px; color:#6B7280; }
+
+  .ai-box { background:#111827; border-radius:20px; padding:36px 32px; margin-bottom:48px; text-align:center; }
+  .ai-box .ai-eyebrow { color:#9CA3AF; font-size:13px; font-weight:700; margin-bottom:10px; }
+  .ai-box h2 { color:#fff; font-size:20px; font-weight:800; margin-bottom:20px; }
+  .ai-input-row { display:flex; gap:8px; max-width:640px; margin:0 auto 16px; }
+  .ai-input-row input { flex:1; border:none; border-radius:10px; padding:14px 16px; font-size:14px; }
+  .ai-input-row button { background:#fff; color:#111827; border:none; border-radius:10px; padding:14px 22px; font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; }
+  .ai-chips { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  .ai-chip { background:rgba(255,255,255,0.12); color:#fff; border:1px solid rgba(255,255,255,0.25); border-radius:16px; padding:7px 14px; font-size:12.5px; cursor:pointer; }
+
+  section.block { margin-bottom:52px; }
+  section.block h2 { font-size:19px; font-weight:800; margin-bottom:18px; }
+
+  .faq-item { border:1px solid #D1D5DB; border-radius:12px; margin-bottom:10px; overflow:hidden; }
+  .faq-q { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; cursor:pointer; font-size:14.5px; font-weight:700; }
+  .faq-q .arrow { transition:transform .2s; color:#9CA3AF; font-size:13px; }
+  .faq-item.open .faq-q .arrow { transform:rotate(180deg); }
+  .faq-a { max-height:0; overflow:hidden; transition:max-height .25s ease; }
+  .faq-item.open .faq-a { max-height:200px; }
+  .faq-a p { padding:0 20px 18px; font-size:13.5px; color:#374151; line-height:1.6; }
+
+  .doc-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  .doc-card { border:1px solid #D1D5DB; border-radius:14px; padding:20px; }
+  .doc-card .doc-name { font-size:15px; font-weight:800; margin-bottom:8px; }
+  .doc-card .doc-desc { font-size:13px; color:#6B7280; line-height:1.5; }
+
+  .glossary-search { display:flex; align-items:center; gap:10px; border:1px solid #D1D5DB; border-radius:10px; padding:10px 16px; margin-bottom:16px; }
+  .glossary-search input { flex:1; border:none; font-size:14px; outline:none; }
+  .term-row { display:grid; grid-template-columns:160px 1fr; gap:20px; padding:16px 0; border-bottom:1px solid #F3F4F6; }
+  .term-word { font-size:14px; font-weight:700; color:#374151; }
+  .term-def { font-size:14px; color:#374151; line-height:1.6; }
+  .no-result { font-size:13.5px; color:#9CA3AF; padding:20px 0; text-align:center; }
+
+  footer { padding:26px 0; text-align:center; font-size:12px; color:#9CA3AF; border-top:1px solid #E5E7EB; margin-top:20px; }
+
+  @media (max-width:860px) {
+    nav { display:none; }
+    .ai-input-row { flex-direction:column; }
+    .doc-grid { grid-template-columns:1fr; }
+    .term-row { grid-template-columns:1fr; gap:6px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="benefit-wireframe-b.html" class="logo">배네핏</a>
+    <nav><a href="benefit-wireframe-benefits.html">혜택탐색</a><a href="benefit-wireframe-training.html">국비교육</a><a href="benefit-wireframe-guide.html" class="active">가이드</a></nav>
+    <div class="header-right"><button class="btn-outline">로그인</button><button class="btn-primary">회원가입</button></div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>가이드 · FAQ</h1>
+      <p>신청 방법부터 행정 용어까지, 궁금한 건 뭐든 물어보세요</p>
+    </div>
+
+    <div class="ai-box">
+      <div class="ai-eyebrow">AI 챗봇</div>
+      <h2>무엇이든 편하게 물어보세요</h2>
+      <div class="ai-input-row">
+        <input type="text" placeholder="예) 청년 도약계좌 신청 자격이 어떻게 되나요?">
+        <button>물어보기</button>
+      </div>
+      <div class="ai-chips">
+        <span class="ai-chip">회원가입 없이도 이용 가능한가요?</span>
+        <span class="ai-chip">중복 신청이 가능한 혜택이 있나요?</span>
+        <span class="ai-chip">필요 서류는 어디서 발급받나요?</span>
+      </div>
+    </div>
+
+    <section class="block">
+      <h2>자주 묻는 질문</h2>
+      <div id="faqList"></div>
+    </section>
+
+    <section class="block">
+      <h2>자주 필요한 서류</h2>
+      <div class="doc-grid">
+        <div class="doc-card"><div class="doc-name">신분증</div><div class="doc-desc">주민등록증, 운전면허증, 여권 중 1개</div></div>
+        <div class="doc-card"><div class="doc-name">소득금액증명원</div><div class="doc-desc">국세청 홈택스(hometax.go.kr)에서 무료 발급</div></div>
+        <div class="doc-card"><div class="doc-name">주민등록등본</div><div class="doc-desc">정부24 또는 가까운 주민센터에서 발급</div></div>
+        <div class="doc-card"><div class="doc-name">통장사본</div><div class="doc-desc">본인 명의 계좌 통장 사본 또는 인터넷뱅킹 화면</div></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>행정 용어 해설</h2>
+      <div class="glossary-search">
+        <span>🔍</span>
+        <input type="text" id="glossarySearch" placeholder="용어를 검색해보세요">
+      </div>
+      <div id="glossaryList"></div>
+    </section>
+  </div>
+</main>
+
+<footer>ⓒ 배네핏 · 이용약관 · 개인정보처리방침</footer>
+
+<script>
+  const faqs = [
+    { q:"회원가입 없이도 혜택을 확인할 수 있나요?", a:"네, 로그인 없이도 전체 혜택을 탐색하고 조건을 확인하실 수 있어요. 저장이나 알림 신청처럼 개인화 기능만 회원가입이 필요해요." },
+    { q:"여러 혜택을 동시에 신청해도 되나요?", a:"대부분의 정부 지원 혜택은 중복 신청이 가능하지만, 일부는 중복 수급이 제한될 수 있어요. 각 혜택 상세 페이지의 자격요건을 확인해주세요." },
+    { q:"혜택 매칭 결과가 실제 수급 자격을 보장하나요?", a:"배네핏의 매칭 결과는 공공데이터를 기반으로 한 참고용 정보예요. 정확한 자격 여부는 반드시 해당 기관 공식 사이트에서 다시 확인해주세요." },
+    { q:"저장한 혜택은 어디서 확인하나요?", a:"마이페이지 > 내 혜택에서 저장한 혜택 목록과 신청 진행 상황을 확인하실 수 있어요." },
+    { q:"마감 임박 알림은 어떻게 신청하나요?", a:"회원가입 후 관심 있는 혜택 상세 페이지에서 '마감 알림 받기'를 누르시면 이메일 또는 카카오 알림톡으로 안내드려요." }
+  ];
+  const faqBox = document.getElementById('faqList');
+  faqs.forEach(f => {
+    const d = document.createElement('div');
+    d.className = 'faq-item';
+    d.innerHTML = '<div class="faq-q">'+f.q+'<span class="arrow">⌄</span></div><div class="faq-a"><p>'+f.a+'</p></div>';
+    d.querySelector('.faq-q').onclick = () => d.classList.toggle('open');
+    faqBox.appendChild(d);
+  });
+
+  const terms = [
+    { word:"기준 중위소득", def:"전체 가구를 소득순으로 줄 세웠을 때 정확히 중간에 있는 가구의 소득" },
+    { word:"정부 기여금", def:"납입액에 비례해 정부가 추가로 얹어주는 지원금" },
+    { word:"자격요건", def:"혜택을 받기 위해 충족해야 하는 조건" },
+    { word:"신청기간", def:"혜택을 신청할 수 있는 정해진 기간" },
+    { word:"정원", def:"모집하는 인원의 최대 수" },
+    { word:"수료율", def:"전체 신청자 중 과정을 끝까지 마친 사람의 비율" }
+  ];
+  const glossaryBox = document.getElementById('glossaryList');
+  function renderGlossary(filter) {
+    const list = filter ? terms.filter(t => t.word.includes(filter) || t.def.includes(filter)) : terms;
+    glossaryBox.innerHTML = '';
+    if (!list.length) {
+      glossaryBox.innerHTML = '<div class="no-result">검색 결과가 없어요</div>';
+      return;
+    }
+    list.forEach(t => {
+      const d = document.createElement('div');
+      d.className = 'term-row';
+      d.innerHTML = '<div class="term-word">'+t.word+'</div><div class="term-def">'+t.def+'</div>';
+      glossaryBox.appendChild(d);
+    });
+  }
+  document.getElementById('glossarySearch').oninput = (e) => renderGlossary(e.target.value.trim());
+  renderGlossary('');
+
+  document.querySelectorAll('.ai-chip').forEach(chip => {
+    chip.onclick = () => { document.querySelector('.ai-input-row input').value = chip.textContent; };
+  });
+</script>
+
+</body>
+</html>

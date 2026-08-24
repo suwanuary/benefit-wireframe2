@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배네핏 - 국비교육</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; color:#111827; background:#fff; }
+  .wrap { max-width:1200px; margin:0 auto; padding:0 24px; }
+  a { text-decoration:none; color:inherit; }
+
+  header { border-bottom:1px solid #E5E7EB; }
+  header .wrap { height:72px; display:flex; align-items:center; justify-content:space-between; }
+  .logo { font-size:20px; font-weight:800; }
+  nav { display:flex; gap:30px; font-size:14px; }
+  nav a { text-decoration:none; color:#374151; }
+  nav a.active { color:#111827; font-weight:700; }
+  .header-right { display:flex; align-items:center; gap:12px; font-size:13.5px; }
+  .btn-primary { background:#111827; color:#fff; border:none; padding:11px 20px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; }
+  .btn-outline { background:#fff; border:1.5px solid #111827; color:#111827; padding:10px 19px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; }
+
+  main { padding-bottom:100px; }
+  .page-head { padding:28px 0 24px; }
+  .page-head h1 { font-size:26px; font-weight:800; margin-bottom:8px; }
+  .page-head p { font-size:14px; color:#6B7280; }
+
+  .filter-card { background:#F5F5F5; border-radius:16px; padding:24px 28px; margin-bottom:24px; }
+  .filter-row { display:flex; gap:12px; flex-wrap:wrap; }
+  .fselect { flex:1; min-width:130px; background:#fff; border:1px solid #D1D5DB; border-radius:10px; padding:10px 14px; }
+  .fselect label { display:block; font-size:11px; color:#9CA3AF; margin-bottom:2px; }
+  .fselect select { border:none; width:100%; font-size:13.5px; background:transparent; color:#111827; }
+  .find-btn { flex-shrink:0; padding:0 24px; border-radius:14px; }
+
+  .sort-row { display:flex; gap:6px; margin-bottom:20px; flex-wrap:wrap; }
+  .sort-row button { background:#fff; border:1px solid #D1D5DB; border-radius:20px; padding:8px 16px; font-size:12.5px; color:#6B7280; cursor:pointer; }
+  .sort-row button.on { background:#111827; color:#fff; border-color:#111827; }
+
+  .course-list { display:flex; flex-direction:column; gap:14px; margin-bottom:56px; }
+  .course-card { border:1px solid #D1D5DB; border-radius:16px; padding:22px 24px; }
+  .cc-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .cc-check { display:flex; align-items:center; gap:6px; font-size:12.5px; color:#6B7280; cursor:pointer; }
+  .cc-field-tag { font-size:12px; color:#6B7280; background:#F5F5F5; padding:4px 10px; border-radius:10px; }
+  .cc-title { font-size:18px; font-weight:800; margin-bottom:6px; }
+  .cc-org { display:flex; align-items:center; gap:6px; font-size:13px; color:#6B7280; margin-bottom:8px; }
+  .cc-org .dot2 { width:14px; height:14px; border-radius:50%; background:#E5E7EB; }
+  .cc-rating { font-size:13.5px; font-weight:700; margin-bottom:16px; }
+  .cc-rating .muted { font-weight:400; color:#9CA3AF; font-size:12.5px; }
+  .cc-stats { display:flex; gap:24px; padding:16px 0; border-top:1px solid #F3F4F6; border-bottom:1px solid #F3F4F6; margin-bottom:16px; flex-wrap:wrap; }
+  .stat-val { font-size:17px; font-weight:800; }
+  .stat-lb { font-size:11.5px; color:#9CA3AF; margin-top:2px; }
+  .cc-apply { margin-bottom:18px; }
+  .apply-row { display:flex; justify-content:space-between; font-size:12.5px; color:#6B7280; margin-bottom:6px; }
+  .apply-track { height:6px; background:#E5E7EB; border-radius:6px; overflow:hidden; }
+  .apply-fill { height:100%; background:#111827; }
+  .btn-row { display:flex; gap:8px; }
+  .btn-row .detail-btn { flex:1; background:#111827; color:#fff; border:none; padding:11px; border-radius:14px; font-size:12.5px; font-weight:700; cursor:pointer; }
+  .btn-row .link-btn { flex:1; background:#fff; border:1px solid #D1D5DB; border-radius:14px; font-size:12.5px; color:#374151; cursor:pointer; }
+
+  .compare-bar { position:fixed; bottom:0; left:0; right:0; background:#111827; color:#fff; padding:16px 24px; display:none; align-items:center; justify-content:center; gap:24px; z-index:30; }
+  .compare-bar.show { display:flex; }
+  .compare-bar span { font-size:14px; }
+  .compare-bar button { background:#fff; color:#111827; border:none; padding:10px 22px; border-radius:8px; font-size:13.5px; font-weight:700; cursor:pointer; }
+  .compare-bar button:disabled { opacity:.4; cursor:not-allowed; }
+
+  .compare-section { display:none; padding:40px 0; border-top:1px solid #E5E7EB; margin-bottom:44px; }
+  .compare-section.show { display:block; }
+  .compare-section h2 { font-size:19px; font-weight:800; margin-bottom:20px; }
+  .table-scroll { overflow-x:auto; }
+  .compare-table { width:100%; border-collapse:collapse; }
+  .compare-table th, .compare-table td { border:1px solid #E5E7EB; padding:14px; text-align:left; font-size:13.5px; white-space:nowrap; }
+  .compare-table th { background:#F5F5F5; font-weight:700; }
+  .compare-table td:first-child, .compare-table th:first-child { color:#6B7280; font-weight:600; }
+
+  .calc-box { background:#F5F5F5; border-radius:16px; padding:28px 32px; margin-bottom:20px; }
+  .calc-box h3 { font-size:17px; font-weight:800; margin-bottom:6px; }
+  .calc-box .sub { font-size:12.5px; color:#6B7280; margin-bottom:22px; }
+  .calc-slider { width:100%; margin-bottom:20px; }
+  .calc-row { display:flex; justify-content:space-between; padding:10px 0; font-size:14px; }
+  .calc-row.highlight { border-top:1px solid #D1D5DB; margin-top:6px; padding-top:16px; font-weight:800; font-size:17px; }
+
+  footer { padding:26px 0; text-align:center; font-size:12px; color:#9CA3AF; border-top:1px solid #E5E7EB; }
+
+  @media (max-width:860px) {
+    nav { display:none; }
+    .filter-row { flex-direction:column; }
+    .btn-row { flex-direction:column; }
+    .cc-stats { gap:16px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="benefit-wireframe-b.html" class="logo">배네핏</a>
+    <nav><a href="benefit-wireframe-benefits.html">혜택탐색</a><a href="benefit-wireframe-training.html" class="active">국비교육</a><a href="benefit-wireframe-guide.html">가이드</a></nav>
+    <div class="header-right"><button class="btn-outline">로그인</button><button class="btn-primary">회원가입</button></div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="page-head">
+      <h1>국비교육 과정 비교</h1>
+      <p>취업률·수료율·수강생 후기까지 한 번에 비교하고, 자부담금까지 미리 계산해보세요</p>
+    </div>
+
+    <div class="filter-card">
+      <div class="filter-row">
+        <div class="fselect"><label>직종</label><select><option>전체</option><option>프로그래밍</option><option>디자인</option><option>데이터</option><option>자격증</option></select></div>
+        <div class="fselect"><label>지역</label><select><option>전체</option><option>서울</option><option>경기</option></select></div>
+        <div class="fselect"><label>수강료</label><select><option>전체</option><option>100만원 이하</option><option>100~300만원</option><option>300만원 이상</option></select></div>
+        <div class="fselect"><label>기간</label><select><option>전체</option><option>3개월 이하</option><option>3~6개월</option><option>6개월 이상</option></select></div>
+        <button class="btn-primary find-btn">검색</button>
+      </div>
+    </div>
+
+    <div class="sort-row">
+      <button class="on">취업률순</button>
+      <button>수료율순</button>
+      <button>평점순</button>
+      <button>정원임박순</button>
+    </div>
+
+    <div class="course-list" id="courseList"></div>
+
+    <div class="compare-section" id="compareSection"></div>
+
+    <div class="calc-box">
+      <h3>자부담금 계산기</h3>
+      <p class="sub">수강료를 조절하면 예상 본인부담금을 확인할 수 있어요 (정부지원율 70% 가정)</p>
+      <input type="range" class="calc-slider" id="calcSlider" min="500000" max="5000000" step="100000" value="2000000">
+      <div class="calc-row"><span>수강료</span><span id="calcTuition">200만원</span></div>
+      <div class="calc-row highlight"><span>예상 자부담금</span><span id="calcSelf">60만원</span></div>
+    </div>
+  </div>
+</main>
+
+<div class="compare-bar" id="compareBar">
+  <span id="selCount">0개 과정 선택됨</span>
+  <button id="compareBtn" disabled>비교하기</button>
+</div>
+
+<footer>ⓒ 배네핏 · 이용약관 · 개인정보처리방침</footer>
+
+<script>
+  const courses = [
+    { id:1, field:"프로그래밍", title:"실무 프론트엔드 개발자 부트캠프", org:"코딩스퀘어 강남", rating:4.5, reviews:212, employ:78, complete:91, tuition:280, cap:30, applied:26 },
+    { id:2, field:"디자인", title:"UI/UX 웹퍼블리싱 & 반응형 디자인", org:"KD아카데미", rating:4.2, reviews:96, employ:65, complete:88, tuition:195, cap:25, applied:14 },
+    { id:3, field:"데이터", title:"데이터분석 실무자 양성과정(Python)", org:"데이터캠퍼스", rating:4.4, reviews:150, employ:71, complete:85, tuition:320, cap:20, applied:19 },
+    { id:4, field:"자격증", title:"전산세무1급 & TAT1급 자격증반", org:"KD아카데미", rating:4.0, reviews:58, employ:58, complete:93, tuition:89, cap:40, applied:12 }
+  ];
+
+  const list = document.getElementById('courseList');
+  courses.forEach(c => {
+    const pct = Math.round(c.applied / c.cap * 100);
+    const d = document.createElement('div');
+    d.className = 'course-card';
+    d.innerHTML =
+      '<div class="cc-top"><label class="cc-check"><input type="checkbox" class="compare-cb" data-id="'+c.id+'"> 비교하기</label><span class="cc-field-tag">'+c.field+'</span></div>' +
+      '<div class="cc-title">'+c.title+'</div>' +
+      '<div class="cc-org"><span class="dot2"></span>'+c.org+'</div>' +
+      '<div class="cc-rating">★ '+c.rating+' <span class="muted">('+c.reviews+'명 후기)</span></div>' +
+      '<div class="cc-stats"><div class="stat"><div class="stat-val">'+c.employ+'%</div><div class="stat-lb">취업률</div></div><div class="stat"><div class="stat-val">'+c.complete+'%</div><div class="stat-lb">수료율</div></div><div class="stat"><div class="stat-val">'+c.tuition+'만원</div><div class="stat-lb">수강료</div></div></div>' +
+      '<div class="cc-apply"><div class="apply-row"><span>신청 현황</span><span>'+c.applied+'/'+c.cap+'명</span></div><div class="apply-track"><div class="apply-fill" style="width:'+pct+'%"></div></div></div>' +
+      '<div class="btn-row"><button class="detail-btn" onclick="location.href=\'benefit-wireframe-institution.html\'">상세보기</button><button class="link-btn">HRD-Net 바로가기</button></div>';
+    list.appendChild(d);
+  });
+
+  const selected = new Set();
+  function updateCompareBar() {
+    document.querySelectorAll('.compare-cb').forEach(cb => {
+      if (!cb.checked) cb.disabled = selected.size >= 3;
+    });
+    const bar = document.getElementById('compareBar');
+    const btn = document.getElementById('compareBtn');
+    if (selected.size > 0) {
+      bar.classList.add('show');
+      document.getElementById('selCount').textContent = selected.size + '개 과정 선택됨 (최대 3개)';
+      btn.disabled = selected.size < 2;
+    } else {
+      bar.classList.remove('show');
+      document.getElementById('compareSection').classList.remove('show');
+    }
+  }
+  document.querySelectorAll('.compare-cb').forEach(cb => {
+    cb.onchange = () => {
+      const id = parseInt(cb.dataset.id);
+      if (cb.checked) selected.add(id); else selected.delete(id);
+      updateCompareBar();
+    };
+  });
+
+  document.getElementById('compareBtn').onclick = () => {
+    const items = courses.filter(c => selected.has(c.id));
+    const rows = [
+      ['수강료', c => c.tuition+'만원'],
+      ['취업률', c => c.employ+'%'],
+      ['수료율', c => c.complete+'%'],
+      ['평점', c => '★ '+c.rating+' ('+c.reviews+')']
+    ];
+    let html = '<table class="compare-table"><tr><th></th>' + items.map(c=>'<th>'+c.title+'</th>').join('') + '</tr>';
+    rows.forEach(([label, fn]) => {
+      html += '<tr><td>'+label+'</td>' + items.map(c=>'<td>'+fn(c)+'</td>').join('') + '</tr>';
+    });
+    html += '</table>';
+    const section = document.getElementById('compareSection');
+    section.innerHTML = '<div class="wrap"><h2>과정 비교</h2><div class="table-scroll">'+html+'</div></div>';
+    section.classList.add('show');
+    section.scrollIntoView({behavior:'smooth', block:'start'});
+  };
+
+  const slider = document.getElementById('calcSlider');
+  function updateCalc() {
+    const tuition = parseInt(slider.value);
+    const selfPay = Math.round(tuition * 0.3 / 10000) * 10000;
+    document.getElementById('calcTuition').textContent = Math.round(tuition/10000) + '만원';
+    document.getElementById('calcSelf').textContent = Math.round(selfPay/10000) + '만원';
+  }
+  slider.oninput = updateCalc;
+  updateCalc();
+</script>
+
+</body>
+</html>

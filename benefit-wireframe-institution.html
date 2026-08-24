@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>배네핏 - 기관 상세</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; color:#111827; background:#fff; }
+  .wrap { max-width:1200px; margin:0 auto; padding:0 24px; }
+  a { text-decoration:none; color:inherit; }
+
+  header { border-bottom:1px solid #E5E7EB; }
+  header .wrap { height:72px; display:flex; align-items:center; justify-content:space-between; }
+  .logo { font-size:20px; font-weight:800; }
+  nav { display:flex; gap:30px; font-size:14px; }
+  nav a { text-decoration:none; color:#374151; }
+  nav a.active { color:#111827; font-weight:700; }
+  .header-right { display:flex; align-items:center; gap:12px; font-size:13.5px; }
+  .btn-primary { background:#111827; color:#fff; border:none; padding:11px 20px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; }
+  .btn-outline { background:#fff; border:1.5px solid #111827; color:#111827; padding:10px 19px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; }
+
+  main { padding-bottom:60px; }
+  .breadcrumb { font-size:13px; color:#9CA3AF; padding:22px 0 18px; }
+  .breadcrumb b { color:#111827; font-weight:600; }
+
+  .inst-head { display:flex; justify-content:space-between; align-items:flex-start; padding-bottom:20px; border-bottom:1px solid #E5E7EB; margin-bottom:24px; gap:16px; flex-wrap:wrap; }
+  .inst-head h1 { font-size:28px; font-weight:800; margin-bottom:10px; }
+  .badge-row { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .loc-badge { font-size:12px; color:#6B7280; background:#F5F5F5; padding:5px 12px; border-radius:12px; }
+  .inst-rating { font-size:14px; font-weight:700; }
+  .inst-rating .muted { font-weight:400; color:#9CA3AF; font-size:12.5px; }
+  .verified { display:inline-flex; align-items:center; gap:5px; font-size:12px; color:#374151; background:#fff; border:1.5px solid #D1D5DB; border-radius:14px; padding:5px 12px; margin-top:8px; }
+
+  .save-btn { width:34px; height:34px; border:1.5px solid #D1D5DB; border-radius:8px; background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#9CA3AF; transition:all .15s; flex-shrink:0; }
+  .save-btn:hover { border-color:#111827; color:#111827; }
+  .save-btn svg { width:16px; height:16px; }
+  .save-btn.saved { background:#111827; border-color:#111827; color:#fff; }
+  .inst-actions { display:flex; gap:10px; align-items:flex-start; }
+
+  .inst-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; background:#F5F5F5; border-radius:16px; padding:24px; margin-bottom:44px; }
+  .inst-stat { text-align:center; }
+  .inst-stat-val { font-size:24px; font-weight:800; }
+  .inst-stat-lb { font-size:12px; color:#6B7280; margin-top:4px; }
+
+  section.block { margin-bottom:44px; }
+  section.block h2 { font-size:19px; font-weight:800; margin-bottom:18px; }
+
+  .mini-course { display:flex; justify-content:space-between; align-items:center; border:1px solid #D1D5DB; border-radius:12px; padding:16px 20px; margin-bottom:10px; gap:16px; flex-wrap:wrap; }
+  .mc-field { font-size:11.5px; color:#6B7280; background:#F5F5F5; padding:3px 9px; border-radius:9px; margin-bottom:6px; display:inline-block; }
+  .mc-title { font-size:14.5px; font-weight:700; margin-bottom:4px; }
+  .mc-meta { font-size:12px; color:#6B7280; }
+  .mc-right { text-align:right; display:flex; align-items:center; gap:14px; }
+  .mc-price { font-size:15px; font-weight:800; }
+  .mc-btn { background:#111827; color:#fff; border:none; padding:9px 18px; border-radius:14px; font-size:12.5px; font-weight:700; cursor:pointer; white-space:nowrap; }
+
+  .review-card { border:1px solid #D1D5DB; border-radius:14px; padding:18px 20px; margin-bottom:12px; }
+  .review-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+  .review-stars { font-size:14px; font-weight:700; }
+  .review-date { font-size:12px; color:#9CA3AF; }
+  .review-text { font-size:14px; color:#374151; line-height:1.6; margin-bottom:8px; }
+  .review-author { font-size:12px; color:#9CA3AF; }
+
+  .hrd-cta { display:flex; justify-content:space-between; align-items:center; background:#111827; border-radius:16px; padding:28px 32px; flex-wrap:wrap; gap:16px; }
+  .hrd-cta p { color:#fff; font-size:15px; font-weight:700; }
+  .hrd-cta span { color:#9CA3AF; font-size:12.5px; }
+  .hrd-cta button { background:#fff; color:#111827; border:none; padding:13px 28px; border-radius:9px; font-size:14px; font-weight:700; cursor:pointer; white-space:nowrap; }
+
+  footer { padding:26px 0; text-align:center; font-size:12px; color:#9CA3AF; border-top:1px solid #E5E7EB; margin-top:40px; }
+
+  @media (max-width:860px) {
+    nav { display:none; }
+    .inst-stats { grid-template-columns:repeat(2,1fr); }
+    .mini-course { flex-direction:column; align-items:flex-start; }
+    .mc-right { width:100%; justify-content:space-between; }
+    .hrd-cta { flex-direction:column; align-items:stretch; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a href="benefit-wireframe-b.html" class="logo">배네핏</a>
+    <nav><a href="benefit-wireframe-benefits.html">혜택탐색</a><a href="benefit-wireframe-training.html" class="active">국비교육</a><a href="benefit-wireframe-guide.html">가이드</a></nav>
+    <div class="header-right"><button class="btn-outline">로그인</button><button class="btn-primary">회원가입</button></div>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <div class="breadcrumb"><a href="benefit-wireframe-b.html">홈</a> &gt; <a href="benefit-wireframe-training.html">국비교육</a> &gt; <b>KD아카데미</b></div>
+
+    <div class="inst-head">
+      <div>
+        <h1>KD아카데미</h1>
+        <div class="badge-row">
+          <span class="loc-badge">노원점</span>
+          <span class="loc-badge">상봉점</span>
+          <span class="loc-badge">구리남양주점</span>
+          <span class="loc-badge">하남미사점</span>
+          <span class="loc-badge">김포점</span>
+        </div>
+        <div class="inst-rating">★ 4.2 <span class="muted">(154개 후기)</span></div>
+        <div class="verified">✓ 정부 인증 직업훈련기관</div>
+      </div>
+      <div class="inst-actions">
+        <button class="save-btn" id="mainSave"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></button>
+      </div>
+    </div>
+
+    <div class="inst-stats">
+      <div class="inst-stat"><div class="inst-stat-val">68%</div><div class="inst-stat-lb">전체 취업률</div></div>
+      <div class="inst-stat"><div class="inst-stat-val">90%</div><div class="inst-stat-lb">전체 수료율</div></div>
+      <div class="inst-stat"><div class="inst-stat-val">12개</div><div class="inst-stat-lb">개설 과정</div></div>
+      <div class="inst-stat"><div class="inst-stat-val">3,200+</div><div class="inst-stat-lb">누적 수강생</div></div>
+    </div>
+
+    <section class="block">
+      <h2>개설 과정</h2>
+      <div class="mini-course">
+        <div>
+          <span class="mc-field">디지털 디자인</span>
+          <div class="mc-title">UI/UX 웹퍼블리싱 & 반응형 디자인</div>
+          <div class="mc-meta">★ 4.2 · 취업률 65% · 3개월 과정</div>
+        </div>
+        <div class="mc-right"><span class="mc-price">195만원</span><button class="mc-btn" onclick="location.href='benefit-wireframe-training.html'">과정 보기</button></div>
+      </div>
+      <div class="mini-course">
+        <div>
+          <span class="mc-field">디지털 디자인</span>
+          <div class="mc-title">스마트 UI/UX 웹콘텐츠 제작</div>
+          <div class="mc-meta">★ 4.3 · 취업률 70% · 4개월 과정</div>
+        </div>
+        <div class="mc-right"><span class="mc-price">210만원</span><button class="mc-btn" onclick="location.href='benefit-wireframe-training.html'">과정 보기</button></div>
+      </div>
+      <div class="mini-course">
+        <div>
+          <span class="mc-field">세무·회계</span>
+          <div class="mc-title">전산세무1급 & TAT1급 자격증반</div>
+          <div class="mc-meta">★ 4.0 · 취업률 58% · 2개월 과정</div>
+        </div>
+        <div class="mc-right"><span class="mc-price">89만원</span><button class="mc-btn" onclick="location.href='benefit-wireframe-training.html'">과정 보기</button></div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2>수강생 후기</h2>
+      <div class="review-card">
+        <div class="review-top"><span class="review-stars">★★★★★</span><span class="review-date">2026.06</span></div>
+        <div class="review-text">실무 위주로 진행돼서 좋았어요. 포트폴리오 만드는 데 실질적으로 도움이 많이 됐습니다.</div>
+        <div class="review-author">익명 · UI/UX 웹퍼블리싱 수강</div>
+      </div>
+      <div class="review-card">
+        <div class="review-top"><span class="review-stars">★★★☆☆</span><span class="review-date">2026.05</span></div>
+        <div class="review-text">강의 자체는 괜찮은데 취업 연계는 본인 노력이 많이 필요한 것 같아요.</div>
+        <div class="review-author">익명 · 전산세무1급 수강</div>
+      </div>
+      <div class="review-card">
+        <div class="review-top"><span class="review-stars">★★★★☆</span><span class="review-date">2026.04</span></div>
+        <div class="review-text">강사님이 질문에 친절하게 답변해주셔서 따라가기 수월했어요.</div>
+        <div class="review-author">익명 · 스마트 UI/UX 웹콘텐츠 수강</div>
+      </div>
+    </section>
+
+    <div class="hrd-cta">
+      <div>
+        <p>HRD-Net에서 개강일·정원 현황을 실시간으로 확인하세요</p>
+        <span>신청은 HRD-Net 공식 페이지에서 진행돼요</span>
+      </div>
+      <button>HRD-Net에서 보기 ↗</button>
+    </div>
+  </div>
+</main>
+
+<footer>ⓒ 배네핏 · 이용약관 · 개인정보처리방침</footer>
+
+<script>
+  document.getElementById('mainSave').onclick = function () { this.classList.toggle('saved'); };
+</script>
+
+</body>
+</html>

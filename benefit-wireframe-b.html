@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>혜택핏 - 메인페이지</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Malgun Gothic", sans-serif; color:#0F172A; background:#F8FAFC; }
+  .wrap { max-width:1200px; margin:0 auto; padding:0 24px; }
+  a { text-decoration:none; color:inherit; }
+  svg { display:block; }
+  img.ic { display:block; object-fit:contain; }
+
+  .top-band { background:linear-gradient(180deg,#EAF2FE 0%, #F5F9FE 60%, #F8FAFC 100%); }
+
+  header { background:rgba(255,255,255,0.65); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom:1px solid rgba(226,232,240,0.6); position:sticky; top:0; z-index:20; }
+  header .wrap { height:72px; display:flex; align-items:center; justify-content:space-between; }
+  .logo { display:flex; align-items:center; gap:9px; font-size:20px; font-weight:800; color:#1D4ED8; }
+  .logo img { height:30px; width:auto; }
+  nav { display:flex; gap:30px; font-size:14px; }
+  nav a { color:#475569; transition:color .15s; }
+  nav a:hover { color:#0F172A; }
+  .header-right { display:flex; align-items:center; gap:10px; font-size:13.5px; }
+  .btn-primary { background:#2563EB; color:#fff; border:none; padding:11px 22px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; transition:background .15s; }
+  .btn-primary:hover { background:#1D4ED8; }
+  .btn-primary:disabled { opacity:.6; cursor:wait; }
+  .btn-outline { background:#fff; border:1.5px solid #DBEAFE; color:#334155; padding:10px 21px; border-radius:14px; font-size:13.5px; font-weight:700; cursor:pointer; transition:all .15s; }
+  .btn-outline:hover { border-color:#93C5FD; }
+
+  .hero { text-align:left; padding:80px 0; background-color:#F8FAFC; background-image:url('images/sub/hero-illustration.png'); background-size:cover; background-position:right 20px; background-repeat:no-repeat; min-height:300px; }
+  .hero-text { max-width:560px; margin-left:40px; }
+  .hero h1 { font-size:37px; font-weight:800; line-height:1.35; margin-bottom:16px; }
+  .hero h1 .accent { color:#2563EB; }
+  .hero p { font-size:14.5px; color:#64748B; line-height:1.6; }
+
+  .quiz-section { padding-bottom:28px; }
+  .quiz-grid { display:grid; grid-template-columns:1fr 300px; gap:20px; align-items:start; }
+  .quiz-card { background:#fff; border:1px solid #E2E8F0; border-radius:22px; padding:30px; box-shadow:0 1px 2px rgba(15,23,42,.03), 0 14px 32px rgba(15,23,42,.06); }
+  .quiz-head { display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1px solid #EDF1F5; margin-bottom:22px; }
+  .qh-left { display:flex; align-items:center; gap:9px; font-size:15px; font-weight:800; }
+  .qh-left img { width:26px; height:26px; border-radius:50%; }
+  .qh-right { display:flex; align-items:center; gap:10px; font-size:13px; color:#64748B; font-weight:600; }
+  .progress-track { width:110px; height:6px; background:#E2E8F0; border-radius:6px; overflow:hidden; }
+  .progress-fill { height:100%; background:#2563EB; border-radius:6px; transition:width .3s; }
+  .q-body h3 { font-size:21px; font-weight:800; margin-bottom:5px; }
+  .q-sub { font-size:13.5px; color:#64748B; margin-bottom:20px; }
+  .opt-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:10px; margin-bottom:22px; }
+  .opt-item { border:1.5px solid #E2E8F0; border-radius:16px; padding:20px 10px; text-align:center; cursor:pointer; transition:all .15s; font-size:13.5px; font-weight:700; color:#334155; }
+  .opt-item:hover { border-color:#93C5FD; background:#F8FAFC; }
+  .opt-item.sel { border-color:#2563EB; background:#EFF6FF; color:#2563EB; }
+  .opt-item .ic-badge { width:80px; height:80px; margin:0 auto 10px; display:flex; align-items:center; justify-content:center; }
+  .opt-item .ic-badge img { width:80px; height:80px; }
+  .income-note { display:flex; justify-content:space-between; align-items:center; padding-top:18px; border-top:1px solid #EDF1F5; margin-bottom:22px; font-size:13px; color:#64748B; flex-wrap:wrap; gap:10px; }
+  .income-note .left { display:flex; align-items:center; gap:8px; }
+  .info-dot { width:18px; height:18px; border-radius:50%; background:#DBEAFE; color:#2563EB; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; flex-shrink:0; }
+  .income-btns { display:flex; gap:8px; }
+  .btn-outline.sm { padding:8px 16px; font-size:12.5px; }
+  .btn-muted.sm { padding:8px 16px; font-size:12.5px; border-radius:14px; background:#F1F5F9; border:1px solid #E2E8F0; color:#94A3B8; cursor:pointer; }
+  .nav-row { display:flex; gap:10px; }
+  .nav-row .btn-outline { flex:1; padding:13px; }
+  .nav-row .btn-primary { flex:2; padding:13px; }
+  .nav-row .btn-outline:disabled { opacity:.4; cursor:not-allowed; }
+
+  .side-panel { display:flex; flex-direction:column; gap:14px; }
+  .side-card { background:#fff; border:1px solid #E2E8F0; border-radius:20px; padding:22px; box-shadow:0 1px 2px rgba(15,23,42,.03), 0 10px 24px rgba(15,23,42,.05); }
+  .side-card h4 { font-size:14.5px; font-weight:800; margin-bottom:14px; }
+  .cond-row { display:flex; align-items:center; gap:10px; font-size:13.5px; padding:10px 0; border-bottom:1px solid #F1F5F9; }
+  .cond-row:last-child { border-bottom:none; }
+  .cond-row .ic-badge { width:28px; height:28px; border-radius:9px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .cond-row .ic-badge img { width:22px; height:22px; }
+  .cond-row .val { margin-left:auto; color:#94A3B8; font-size:12.5px; }
+  .cond-row.done .val { color:#2563EB; font-weight:700; }
+  .side-hint { display:flex; gap:10px; background:#EFF6FF; border-radius:14px; padding:14px 16px; font-size:12px; color:#475569; line-height:1.5; align-items:flex-start; }
+  .side-hint .accent { color:#2563EB; font-weight:800; }
+  .hint-icon { width:26px; height:26px; flex-shrink:0; margin-top:1px; }
+  .btn-primary.full { width:100%; padding:13px; }
+  .btn-outline.full { width:100%; padding:13px; display:flex; align-items:center; justify-content:center; gap:6px; }
+  .btn-outline.full svg { width:14px; height:14px; }
+
+  .cats-card { background:#fff; border:1px solid #E2E8F0; border-radius:20px; padding:20px; box-shadow:0 1px 2px rgba(15,23,42,.03), 0 10px 24px rgba(15,23,42,.05); margin-bottom:32px; }
+  .cat-circles { display:grid; grid-template-columns:repeat(9,1fr); gap:10px; }
+  .cc-item { display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer; }
+  .cc-item .ic-badge { width:52px; height:52px; border-radius:50%; display:flex; align-items:center; justify-content:center; transition:all .15s; }
+  .cc-item .ic-badge img { width:40px; height:40px; }
+  .cc-item:hover .ic-badge { transform:translateY(-2px); }
+  .cc-item .lb { font-size:12px; font-weight:600; color:#475569; }
+  .cc-item.sel .lb { color:#2563EB; font-weight:800; }
+
+  main .results-section { padding-bottom:44px; }
+  .trending-tags { display:flex; align-items:center; gap:14px; background:#fff; border:1px solid #E2E8F0; border-radius:16px; padding:14px 20px; margin-bottom:32px; flex-wrap:wrap; }
+  .tt-icon { font-size:16px; flex-shrink:0; }
+  .trending-tags b { font-size:13.5px; font-weight:800; white-space:nowrap; flex-shrink:0; }
+  .tt-chips { display:flex; gap:8px; flex-wrap:wrap; flex:1; }
+  .tt-chip { font-size:12.5px; font-weight:600; color:#2563EB; background:#EFF6FF; padding:6px 13px; border-radius:999px; transition:all .15s; }
+  .tt-chip:hover { background:#DBEAFE; }
+  .tt-more { font-size:12.5px; color:#94A3B8; font-weight:600; white-space:nowrap; flex-shrink:0; }
+  .results-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:22px; }
+  .results-head h2 { font-size:21px; font-weight:800; }
+  .more-link { display:flex; align-items:center; gap:5px; font-size:13px; color:#475569; font-weight:600; }
+  .more-link svg { width:14px; height:14px; }
+  .result-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; transition:opacity .2s; }
+  .result-grid.loading { opacity:.3; }
+  @keyframes cardIn { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+  .r-card { background:#fff; border:1px solid #E2E8F0; border-radius:18px; padding:20px; position:relative; transition:all .15s; }
+  .r-card:hover { border-color:#93C5FD; box-shadow:0 8px 20px rgba(15,23,42,.06); transform:translateY(-2px); }
+  .r-card.new { animation:cardIn .35s ease; }
+  .save-btn { position:absolute; top:16px; right:16px; width:28px; height:28px; border:none; background:transparent; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#CBD5E1; transition:all .15s; }
+  .save-btn:hover { color:#94A3B8; }
+  .save-btn svg { width:18px; height:18px; }
+  .save-btn.saved { color:#2563EB; }
+  .save-btn.saved svg { fill:#2563EB; }
+  .cat-badge { display:inline-block; font-size:11.5px; font-weight:700; padding:5px 11px; border-radius:999px; margin-bottom:12px; }
+  .r-card .title { font-size:15.5px; font-weight:800; margin-bottom:8px; line-height:1.35; }
+  .r-card .desc { font-size:12.5px; color:#64748B; line-height:1.55; margin-bottom:14px; }
+  .tag-row { display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap; }
+  .mini-tag { font-size:11px; color:#64748B; background:#F1F5F9; padding:4px 9px; border-radius:7px; }
+  .r-card .btn-row .detail-btn { width:100%; background:#fff; color:#2563EB; border:1.5px solid #BFDBFE; padding:10px; border-radius:14px; font-size:12.5px; font-weight:700; cursor:pointer; transition:all .15s; }
+  .r-card .btn-row .detail-btn:hover { background:#EFF6FF; }
+
+  footer { padding:26px 0; text-align:center; font-size:12px; color:#94A3B8; border-top:1px solid #E2E8F0; background:#fff; }
+
+  .exit-overlay { position:fixed; inset:0; background:rgba(15,23,42,.55); display:none; align-items:center; justify-content:center; z-index:100; padding:20px; }
+  .exit-overlay.show { display:flex; }
+  .exit-modal { background:#fff; border-radius:22px; padding:32px 28px; max-width:360px; width:100%; text-align:center; position:relative; box-shadow:0 20px 50px rgba(0,0,0,.25); animation:modalIn .25s ease; }
+  @keyframes modalIn { from{opacity:0; transform:scale(.95);} to{opacity:1; transform:scale(1);} }
+  .exit-close { position:absolute; top:14px; right:14px; width:28px; height:28px; border:none; background:#F1F5F9; border-radius:50%; color:#64748B; cursor:pointer; font-size:14px; line-height:1; }
+  .exit-mascot { width:56px; height:56px; margin:0 auto 14px; }
+  .exit-modal h3 { font-size:18px; font-weight:800; margin-bottom:8px; }
+  .exit-modal > p { font-size:13.5px; color:#64748B; margin-bottom:18px; }
+  .exit-benefits { list-style:none; text-align:left; margin-bottom:22px; }
+  .exit-benefits li { font-size:13px; color:#334155; padding:8px 0; padding-left:22px; position:relative; }
+  .exit-benefits li::before { content:"✓"; position:absolute; left:0; color:#2563EB; font-weight:800; }
+  .exit-dismiss { display:block; margin-top:12px; font-size:12.5px; color:#94A3B8; cursor:pointer; }
+
+  @media (max-width:860px) {
+    .hero { background-image:none; min-height:0; padding:36px 0; }
+    nav { display:none; }
+    .hero h1 { font-size:26px; }
+    .quiz-grid { grid-template-columns:1fr; }
+    .quiz-card { padding:20px; }
+    .opt-grid { grid-template-columns:repeat(2,1fr); }
+    .cat-circles { grid-template-columns:repeat(3,1fr); }
+    .result-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-band">
+  <header>
+    <div class="wrap">
+      <a href="benefit-wireframe-b.html" class="logo">
+        <img src="images/sub/logo.png" alt="혜택핏">
+      </a>
+      <nav>
+        <a href="benefit-wireframe-benefits.html">혜택탐색</a>
+        <a href="benefit-wireframe-training.html">국비교육</a>
+        <a href="benefit-wireframe-guide.html">가이드</a>
+      </nav>
+      <div class="header-right"><button class="btn-outline">로그인</button><button class="btn-primary">회원가입</button></div>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="wrap">
+      <div class="hero-text">
+        <h1>몇 가지 질문만 답하면<br><span class="accent">받을 수 있는 혜택</span>을 빠르게 찾아드려요</h1>
+        <p>정부24, 복지로, 고용24와 지자체 혜택까지<br>한 번에 비교하고 맞춤으로 찾아드려요.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <section class="quiz-section" style="margin-top:-8px;">
+      <div class="quiz-grid">
+        <div class="quiz-card">
+          <div class="quiz-head">
+            <div class="qh-left"><img src="images/sub/logo-mascot.png" alt="">빠른 혜택 진단</div>
+            <div class="qh-right"><span id="stepNum">1/4</span><div class="progress-track"><div class="progress-fill" id="pf" style="width:25%"></div></div></div>
+          </div>
+          <div class="q-body">
+            <h3 id="qTitle"></h3>
+            <p class="q-sub" id="qSub"></p>
+            <div class="opt-grid" id="optGrid"></div>
+            <div class="income-note">
+              <div class="left"><span class="info-dot">i</span>정확도를 높이려면 소득 정보를 추가할 수 있어요 (선택)</div>
+              <div class="income-btns"><button class="btn-outline sm">소득 정보 추가</button><button class="btn-muted sm">나중에 입력</button></div>
+            </div>
+            <div class="nav-row">
+              <button class="btn-outline" id="prevBtn" onclick="prevStep()">이전</button>
+              <button class="btn-primary" id="nextBtn" onclick="nextStep()">다음 질문</button>
+            </div>
+          </div>
+        </div>
+
+        <aside class="side-panel">
+          <div class="side-card">
+            <h4>선택한 조건</h4>
+            <div class="cond-row" id="row0"><span class="ic-badge"><img src="images/sub/icon-condition-job.png" alt=""></span>취업상태<span class="val">선택 전</span></div>
+            <div class="cond-row" id="row1"><span class="ic-badge"><img src="images/sub/icon-condition-region.png" alt=""></span>지역<span class="val">선택 전</span></div>
+            <div class="cond-row" id="row2"><span class="ic-badge"><img src="images/sub/icon-condition-age.png" alt=""></span>연령<span class="val">선택 전</span></div>
+            <div class="cond-row" id="row3"><span class="ic-badge"><img src="images/sub/icon-condition-interest.png" alt=""></span>관심분야<span class="val">선택 전</span></div>
+          </div>
+          <div class="side-hint">
+            <img src="images/sub/icon-tip.png" alt="" class="hint-icon">
+            <p>선택한 조건을 바탕으로 <span class="accent">추천 혜택</span>을 알려드려요.</p>
+          </div>
+          <button class="btn-primary full" id="previewBtn">결과 미리 보기</button>
+          <button class="btn-outline full"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg>회원가입하고 저장하기</button>
+        </aside>
+      </div>
+    </section>
+
+    <section class="cats-card">
+      <div class="cat-circles" id="catCircles"></div>
+    </section>
+
+    <section class="trending-tags">
+      <span class="tt-icon">📢</span>
+      <b>지금 많이 찾는 혜택</b>
+      <div class="tt-chips">
+        <a href="#benefitResults" class="tt-chip">#청년도약계좌</a>
+        <a href="#benefitResults" class="tt-chip">#국민내일배움카드</a>
+        <a href="#benefitResults" class="tt-chip">#청년월세지원</a>
+        <a href="#benefitResults" class="tt-chip">#근로장려금</a>
+        <a href="#benefitResults" class="tt-chip">#건강보험료경감</a>
+      </div>
+      <a href="#" class="tt-more">더보기 ⌄</a>
+    </section>
+
+    <section class="results-section" id="benefitResults">
+      <div class="results-head">
+        <h2>추천 혜택</h2>
+        <a class="more-link" href="benefit-wireframe-benefits.html">더보기 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="result-grid" id="resultGrid"></div>
+    </section>
+  </div>
+</main>
+
+<footer>ⓒ 혜택핏 · 이용약관 · 개인정보처리방침</footer>
+
+<div class="exit-overlay" id="exitOverlay">
+  <div class="exit-modal">
+    <button class="exit-close" id="exitClose">✕</button>
+    <img src="images/sub/logo-mascot.png" alt="" class="exit-mascot">
+    <h3>닫기 전에 잠시만요!</h3>
+    <p>회원가입하면 이런 혜택을 놓치지 않아요</p>
+    <ul class="exit-benefits">
+      <li>마감 임박 혜택 알림</li>
+      <li>내 조건 저장하고 한 번에 확인</li>
+      <li>AI 챗봇 맞춤 상담</li>
+    </ul>
+    <button class="btn-primary full">회원가입하고 혜택 받기</button>
+    <span class="exit-dismiss" id="exitDismiss">괜찮아요, 나중에 할게요</span>
+  </div>
+</div>
+
+<script>
+  const steps = [
+    { key:'취업상태', row:'row0', q:"현재 어떤 상황이신가요?", sub:"해당 사항을 선택해 주세요.",
+      opts:[["재직자","icon-employed.png","#DBEAFE"],["구직자","icon-jobseeker.png","#EDE9FE"],["자영업자","icon-selfemployed.png","#D1FAE5"],["학생","icon-student.png","#FEF3C7"],["경력단절","icon-career-break.png","#FEE2E2"]] },
+    { key:'지역', row:'row1', q:"어디에 거주하고 계세요?", sub:"거주 중이신 지역을 선택해 주세요.",
+      opts:[["서울특별시","icon-region-seoul.png","#FFEDD5"],["경기도","icon-region-gyeonggi.png","#EDE9FE"],["인천","icon-region-incheon.png","#DBEAFE"],["기타지역","icon-region-etc.png","#FEE2E2"]] },
+    { key:'연령', row:'row2', q:"연령대가 어떻게 되세요?", sub:"나이 기반으로 자격 조건을 판별해요.",
+      opts:[["19~24세","icon-age-19-24.png","#D1FAE5"],["25~34세","icon-age-25-34.png","#EDE9FE"],["35~49세","icon-age-35-49.png","#FFEDD5"],["50세 이상","icon-age-50plus.png","#FCE7F3"]] },
+    { key:'관심분야', row:'row3', q:"관심 있는 분야를 선택해주세요", sub:"홈 화면 혜택 카드 우선순위에 반영돼요.",
+      opts:[["현금·수당","icon-interest-cash.png","#D1FAE5"],["교육·훈련","icon-interest-edu.png","#EDE9FE"],["주거지원","icon-interest-housing.png","#D1FAE5"],["취업·창업","icon-interest-job.png","#FCE7F3"]] }
+  ];
+  let step = 0;
+  const answers = {};
+
+  function renderStep() {
+    const s = steps[step];
+    document.getElementById('stepNum').textContent = (step+1)+'/'+steps.length;
+    document.getElementById('pf').style.width = ((step+1)/steps.length*100)+'%';
+    document.getElementById('qTitle').textContent = s.q;
+    document.getElementById('qSub').textContent = s.sub;
+    const grid = document.getElementById('optGrid');
+    grid.innerHTML = '';
+    s.opts.forEach(([o, img, bg]) => {
+      const d = document.createElement('div');
+      d.className = 'opt-item' + (answers[s.key]===o ? ' sel':'');
+      d.innerHTML = '<div class="ic-badge"><img class="ic" src="images/sub/'+img+'" alt="'+o+'"></div>'+o;
+      d.onclick = () => { answers[s.key]=o; renderStep(); updateSide(); };
+      grid.appendChild(d);
+    });
+    document.getElementById('prevBtn').disabled = step===0;
+    document.getElementById('nextBtn').textContent = step===steps.length-1 ? '결과 보기' : '다음 질문';
+  }
+  function updateSide() {
+    const rows = [['row0','취업상태'],['row1','지역'],['row2','연령'],['row3','관심분야']];
+    rows.forEach(([id,key]) => {
+      const row = document.getElementById(id);
+      const val = answers[key];
+      row.querySelector('.val').textContent = val || '선택 전';
+      row.classList.toggle('done', !!val);
+    });
+  }
+  function nextStep(){ if(step<steps.length-1){ step++; renderStep(); } else { openResults(answers['관심분야'], document.getElementById('nextBtn')); } }
+  function prevStep(){ if(step>0){ step--; renderStep(); } }
+  renderStep();
+
+  const catList = [
+    ["현금·수당","icon-cat-cash.png"], ["교육·훈련","icon-cat-edu.png"], ["주거지원","icon-cat-housing.png"],
+    ["취업","icon-cat-job.png"], ["창업","icon-cat-startup.png"], ["육아·가족","icon-cat-family.png"],
+    ["건강·복지","icon-cat-health.png"], ["우리지역","icon-cat-region.png"]
+  ];
+  const CAT_COLOR = {
+    "현금·수당":{c:"#16A34A",bg:"#DCFCE7"}, "교육·훈련":{c:"#7C3AED",bg:"#F5F3FF"},
+    "주거지원":{c:"#2563EB",bg:"#EFF6FF"}, "취업":{c:"#16A34A",bg:"#DCFCE7"},
+    "창업":{c:"#0F172A",bg:"#F1F5F9"}, "육아·가족":{c:"#CA8A04",bg:"#FEF9C3"},
+    "건강·복지":{c:"#DB2777",bg:"#FDF2F8"}, "우리지역":{c:"#2563EB",bg:"#EFF6FF"}
+  };
+  const CAT_IMG = Object.fromEntries(catList);
+
+  const ALL_BENEFITS = [
+    { tag:"현금·수당", title:"청년 도약계좌", src:"금융위원회", desc:"매월 저축하면 정부가 최대 6%까지 기여금을 지원", tags:["청년","저축"] },
+    { tag:"현금·수당", title:"근로장려금", src:"국세청", desc:"소득·재산 기준 충족 시 근로 장려 지원금 지급", tags:["구직자","장려금"] },
+    { tag:"교육·훈련", title:"국민내일배움카드", src:"고용24", desc:"직업훈련비 최대 500만원 지원", tags:["전국민","직업훈련"] },
+    { tag:"주거지원", title:"청년월세 한시 특별지원", src:"복지로", desc:"월 최대 20만원, 최대 12개월 지원", tags:["청년","주거"] },
+    { tag:"취업", title:"국민취업지원제도", src:"고용24", desc:"구직활동 지원 및 취업지원금 50만원…", tags:["구직자","취업지원"] },
+    { tag:"창업", title:"초기창업패키지", src:"중소벤처기업부", desc:"예비창업자 대상 최대 1억원 사업화 자금 지원", tags:["예비창업자","창업"] },
+    { tag:"육아·가족", title:"첫만남이용권", src:"보건복지부", desc:"출생아 1인당 200만원 바우처 지급", tags:["출산가구","육아"] },
+    { tag:"건강·복지", title:"건강보험료 경감", src:"국민건강보험공단", desc:"소득 기준 충족 시 보험료 최대 50% 경감", tags:["저소득","건강"] },
+    { tag:"우리지역", title:"서울 청년 월세 지원", src:"서울특별시", desc:"서울 거주 청년 대상 월 최대 20만원 지원", tags:["청년","서울"] }
+  ];
+
+  let activeCat = null;
+  const cbox = document.getElementById('catCircles');
+  const grid = document.getElementById('resultGrid');
+
+  function renderCats() {
+    cbox.innerHTML = '';
+    const allItem = document.createElement('div');
+    allItem.className = 'cc-item' + (activeCat===null ? ' sel':'');
+    allItem.innerHTML = '<div class="ic-badge"><img class="ic" src="images/sub/icon-cat-all.png" alt="전체"></div><div class="lb">전체</div>';
+    allItem.onclick = () => { activeCat = null; renderCats(); renderResults(); };
+    cbox.appendChild(allItem);
+    catList.forEach(([c, img]) => {
+      const d = document.createElement('div');
+      d.className = 'cc-item' + (activeCat===c ? ' sel':'');
+      d.innerHTML = '<div class="ic-badge"><img class="ic" src="images/sub/'+img+'" alt="'+c+'"></div><div class="lb">'+c+'</div>';
+      d.onclick = () => { activeCat = c; renderCats(); renderResults(); };
+      cbox.appendChild(d);
+    });
+  }
+
+  function renderResults() {
+    const list = activeCat ? ALL_BENEFITS.filter(b => b.tag===activeCat) : ALL_BENEFITS;
+    grid.innerHTML = '';
+    list.forEach(r => {
+      const col = CAT_COLOR[r.tag];
+      const d = document.createElement('div');
+      d.className = 'r-card new';
+      d.innerHTML =
+        '<button class="save-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4-7 4V4a1 1 0 0 1 1-1z"/></svg></button>' +
+        '<span class="cat-badge" style="color:'+col.c+';background:'+col.bg+';">'+r.tag+'</span>' +
+        '<div class="title">'+r.title+'</div>' +
+        '<div class="desc">'+r.desc+'</div>' +
+        '<div class="tag-row">'+r.tags.map(t=>'<span class="mini-tag">'+t+'</span>').join('')+'</div>' +
+        '<div class="btn-row"><button class="detail-btn" onclick="location.href=\'benefit-wireframe-detail.html\'">상세보기</button></div>';
+      grid.appendChild(d);
+      d.querySelector('.save-btn').onclick = function(e){ e.stopPropagation(); this.classList.toggle('saved'); };
+    });
+  }
+
+  function openResults(presetCat, triggerBtn) {
+    const label = triggerBtn ? triggerBtn.textContent : null;
+    if (triggerBtn) { triggerBtn.textContent = '찾는 중...'; triggerBtn.disabled = true; }
+    grid.classList.add('loading');
+    setTimeout(() => {
+      activeCat = catList.some(([c])=>c===presetCat) ? presetCat : null;
+      renderCats();
+      renderResults();
+      grid.classList.remove('loading');
+      if (triggerBtn) { triggerBtn.textContent = label; triggerBtn.disabled = false; }
+      document.querySelector('.results-section').scrollIntoView({behavior:'smooth', block:'start'});
+    }, 450);
+  }
+
+  renderCats();
+  renderResults();
+
+  document.getElementById('previewBtn').onclick = () => openResults(null, document.getElementById('previewBtn'));
+
+  let exitShown = false;
+  const pageLoadTime = Date.now();
+  function showExitModal() {
+    if (exitShown) return;
+    exitShown = true;
+    document.getElementById('exitOverlay').classList.add('show');
+  }
+  function hideExitModal() {
+    document.getElementById('exitOverlay').classList.remove('show');
+  }
+  document.getElementById('exitClose').onclick = hideExitModal;
+  document.getElementById('exitDismiss').onclick = hideExitModal;
+  document.getElementById('exitOverlay').addEventListener('click', (e) => {
+    if (e.target.id === 'exitOverlay') hideExitModal();
+  });
+
+  document.addEventListener('mouseleave', (e) => {
+    if (e.clientY <= 0 && Date.now() - pageLoadTime > 3000) showExitModal();
+  });
+
+  if (window.innerWidth <= 860) {
+    setTimeout(showExitModal, 25000);
+  }
+</script>
+
+</body>
+</html>
